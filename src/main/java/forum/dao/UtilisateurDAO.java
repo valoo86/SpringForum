@@ -13,5 +13,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author ETY
  */
 public interface UtilisateurDAO extends CrudRepository<Utilisateur, Long>{
-    
+    public Utilisateur findOneByLoginAndMdp(String login, String mdp);
 }

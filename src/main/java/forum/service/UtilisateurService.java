@@ -8,6 +8,7 @@ package forum.service;
 import forum.dao.UtilisateurDAO;
 import forum.entity.Utilisateur;
 import forum.entity.Utilisateur.Etat;
+import forum.exception.UtilisateurException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,5 +66,17 @@ public class UtilisateurService {
         utilisateur.setEtat(Etat.ACTIF);
         
         dao.save(utilisateur);
+    }
+    
+    public void login(String login, String mdp) throws UtilisateurException{
+        Utilisateur utilisateur = dao.findOneByLoginAndMdp(login, mdp);
+        
+        if(utilisateur == null)
+            throw new UtilisateurException("Utilisateur non trouvé dans la base de données.");
+        else if(utilisateur.getEtat() == Etat.INACTIF)
+            throw new UtilisateurException("Utilisateur non actif.");
+        else
+            System.out.println("Félicitations vous vous êtes connecté !");
+            
     }
 }

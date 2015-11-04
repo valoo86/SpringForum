@@ -7,6 +7,7 @@ package forum.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.eclipse.persistence.annotations.DeleteAll;
 
 /**
  *
@@ -60,13 +63,16 @@ public class Utilisateur implements Serializable {
     @OneToMany(mappedBy = "createur")
     private List<Sujet> sujetsPostes;
     
-    @OneToMany(mappedBy = "createur")
+    @OneToMany(mappedBy = "createur", cascade = CascadeType.REMOVE)
+    @CascadeOnDelete
     private List<Message> messagesPostes;
 
-    @OneToMany(mappedBy = "emetteur")
+    @OneToMany(mappedBy = "emetteur", cascade = CascadeType.REMOVE)
+    @CascadeOnDelete
     private List<Messageprive> messagePrivesEmis;
     
-    @OneToMany(mappedBy = "recepteur")
+    @OneToMany(mappedBy = "recepteur", cascade = CascadeType.REMOVE)
+    @CascadeOnDelete
     private List<Messageprive> messagePrivesReçus;
     
     public Utilisateur(String login, String mdp, Type type, Long id) {
